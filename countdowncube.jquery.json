@@ -5,7 +5,7 @@
         "name": "Ali Cigari",
         "url": "http://cigari.co.ukt"
     },
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "A Countdown Timer in the form rotating 3D cubes",
   "main": "countdowncube.js",
   "scripts": {
