@@ -12,7 +12,7 @@ add a new empty div to your page:
 
     <div id="counter"></div>
 
-adn then kick off a new counter, with a targert time, and if you like size (in pixels), background (color), and font Color:
+and then kick off a new counter, with a target time, and if you like size (in pixels), background (color), and font Color:
 
     $('#counter').countdownCube( {
       target: new Date( 'April 26, 2014 13:30:00' ),
