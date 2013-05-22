@@ -8,9 +8,6 @@
   "version": "0.0.0",
   "description": "A Countdown Timer in the form rotating 3D cubes",
   "main": "countdowncube.js",
-  "scripts": {
-    "test": "tap test.js"
-  },
   "dependencies": {
         "jquery": ">=1.0"
   },
