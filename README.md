@@ -1,18 +1,20 @@
 countdownCube
 =============
 
-countdown cube is a jQuery plugin that is in form of a bunch of rotating 3d cubes. You can see an example in http://cigari.co.uk/countdown
+CountdownCube is a jQuery plugin that is in the form of a bunch of rotating 3D cubes. You can see an example in http://cigari.co.uk/countdown
 
-make sure you have jQuery loaded - link the following files:
+It uses CSS transitions to create the 3D rotating cube effects.
+
+Make sure you have jQuery loaded - link the following files:
 
     <link rel="stylesheet" href="countdownCube.css"/>
     <script type="text/javascript" src="countdowncube.js"></script>
 
-add a new empty div to your page:
+Add a new empty div to your page:
 
     <div id="counter"></div>
 
-and then kick off a new counter, with a target time, and if you like size (in pixels), background (color), and font Color:
+And then kick off a new counter, with a target time, and if you like cubeSize (in pixels), background color, and font color:
 
     $('#counter').countdownCube( {
       target: new Date( 'April 26, 2014 13:30:00' ),
