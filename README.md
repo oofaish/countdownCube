@@ -3,7 +3,7 @@ countdownCube
 
 countdown cube is a jQuery plugin that is in form of a bunch of rotating 3d cubes. You can see an example in http://cigari.co.uk/countdown
 
-make sure you ahve jQuery loaded - link the following files:
+make sure you have jQuery loaded - link the following files:
 
     <link rel="stylesheet" href="countdownCube.css"/>
     <script type="text/javascript" src="countdowncube.js"></script>
