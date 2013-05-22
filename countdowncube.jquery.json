@@ -5,22 +5,21 @@
         "name": "Ali Cigari",
         "url": "http://cigari.co.uk"
     },
-  "version": "0.0.2",
-  "description": "A Countdown Timer in the form rotating 3D cubes",
+  "version": "0.0.3",
   "main": "countdowncube.js",
   "dependencies": {
         "jquery": ">=1.0"
   },
-  "description": "CountdownCube is a jQuery plugin that creates a countdown timer using an array of 3d rotating cubes.",
+  "description": "CountdownCube is a countdown timer in form of a set of (CSS-transition based) rotating 3D cubes.",
   "licenses": [ {
     "type": "MIT",
     "url": "https://github.com/oofaish/countdownCube/blob/master/license.txt"
   }],
   "keywords":[
+    "ui",
     "countdown",
     "timer",
     "3d",
     "cube",
-    "minutes"
   ]
 }
