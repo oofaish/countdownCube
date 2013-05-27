@@ -1,11 +1,13 @@
 {
   "name": "countdowncube",
   "title": "Countdown Cube",
+  "homepage", "http://cigari.co.uk/countdown",
+  "demo", "http://cigari.co.uk/countdown",
   "author": {
         "name": "Ali Cigari",
         "url": "http://cigari.co.uk"
     },
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "countdowncube.js",
   "dependencies": {
         "jquery": ">=1.0"
