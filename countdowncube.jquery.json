@@ -7,7 +7,7 @@
         "name": "Ali Cigari",
         "url": "http://cigari.co.uk"
     },
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "countdowncube.js",
   "dependencies": {
         "jquery": ">=1.0"
