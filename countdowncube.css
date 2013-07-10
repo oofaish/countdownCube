@@ -1,3 +1,8 @@
+.countdownCubeContainer *
+{
+  box-sizing: content-box;
+}
+
 .countdownCubeContainer {
   display: inline-block;
     position: relative;
@@ -19,7 +24,7 @@
     }
 
     .countdownCubeCube figure {
-      margin: 0,
+      margin: 0;
       display: block;
       position: absolute;
       border: 2px solid black;
@@ -28,7 +33,7 @@
       text-align: center;
     }
 
-    .countdownCubeCube.panels-backface-invisible figure {
+    .countdownCubeCube.panels-backface-invisible figure, .countdownCubeCube figure {
       -webkit-backface-visibility: hidden;
          -moz-backface-visibility: hidden;
            -o-backface-visibility: hidden;
