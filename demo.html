@@ -1,31 +1,56 @@
 <!DOCTYPE html>
 <html class="no-js">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Ali Cigari - jack of all trades - CountdownCube</title>
-        <meta name="description" content="Personal Website of Ali Cigari, jack of all trades...">
-        <meta name="viewport" content="initial-scale=1.0,width=device-width,user-scalable=0">
-        <link rel="stylesheet" href="countdowncube.css">
-        <style class="inlinestyle">#counter
-        {
-           margin: 10 auto;
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ali Cigari - jack of all trades - CountdownCube</title>
+    <meta name="description" content="Personal Website of Ali Cigari, jack of all trades...">
+    <meta name="viewport" content="initial-scale=1.0,width=device-width,user-scalable=0">
+    <link rel="stylesheet" href="countdowncube.css">
+    <style class="inlinestyle">
+      .counter {
+        margin: 10 auto;
         text-align: center;
-        }</style>
-
-    </head>
-    <body>
-        <div id='counter'></div>
+      }
+    </style>
+  </head>
+  <body>
+    <div id='counter' class='counter'></div>
+    <br />
+    <div id='counter-days-only' class='counter'></div>
 
     <p>Download the source code <a title="Countdown Cube Github" target="_blank" href="https://github.com/oofaish/countdownCube">here</a>.</p>
 
-
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="countdowncube.js"></script>
-        <script>
-                    $('#counter').countdownCube({target: new Date( 'January 1, 2020 00:00:00' ), cubeSize: 50 } );
-       </script>
-    </body>
+    <script>
+      $('#counter').countdownCube( {
+        target: new Date( 'March 1, 2018 10:00:00' ),
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'red',
+        labelsTranslations: {'year': 'anni',
+                             'month': 'mesi',
+                             'day': 'giorni',
+                             'hour': 'ore',
+                             'minute': 'minuti',
+                             'second': 'secondi'
+                             },
+        } );
+      $('#counter-days-only').countdownCube( {
+        target: new Date( 'March 1, 2018 10:00:00' ),
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'blue',
+        labelsTranslations: {'year': 'anni',
+                             'month': 'mesi',
+                             'day': 'giorni',
+                             'hour': 'ore',
+                             'minute': 'minuti',
+                             'second': 'secondi'
+                             },
+        showDaysOnly: true,
+        } );
+    </script>
+  </body>
 </html>
-
