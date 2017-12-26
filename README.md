@@ -35,19 +35,22 @@ Feel free to use it as it wish, but I would appreciate a plug to my website http
 
 ## Timezone support
 
-Timezone support can be added with the [`moment.js`](http://momentjs.com/) and  [`moment-timezone.js`](http://momentjs.com/timezone/) libraries.
+Timezone can be specified in the string in serveral formats:
+* adding a letter `Z` at the end on the timestring `'2018-03-01T01:00:00Z'`
+* adding an offset  with respect to UTC in the format `±hh:mm`: `'2018-03-01T01:00:00-05:00'` (this is the timezone of New York (US))
+
+Support for timezones expressed as `'Continent/City'` can be added with the [`moment.js`](http://momentjs.com/) and  [`moment-timezone.js`](http://momentjs.com/timezone/) libraries.
 
 For example, you can add them using the following CDNs:
 ```html
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data-2012-2022.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data-2012-2022.min.js" type="text/javascript"></script>
 ```
 
 You can specify the timezone with the option `targetTimezone`:
 ```javascript
 $('#counter').countdownCube( {
-  target: '2018-03-01T10:00:00Z',
+  target: '2018-03-01T10:00:00',
   targetTimezone: 'America/New_York',
   cubeSize: 50,
   background: 'rgba( 255, 150, 150, 0.8 )',
@@ -56,10 +59,34 @@ $('#counter').countdownCube( {
 ```
 see the [documentation of `moment-timezone.js`](http://momentjs.com/timezone/docs/#/using-timezones/).
 
-The legacy syntax (using the built-in `Date` object) is still supported but lacks timezone support:
+The legacy syntax (using the built-in `Date` object) is still supported but may be incosistent across browsers. Timezone :
 ```javascript
 $('#counter').countdownCube( {
-  target: new Date('2018-03-01T10:00:00Z'),
+  target: new Date('2018-03-01T10:00:00'),
+  cubeSize: 50,
+  background: 'rgba( 255, 150, 150, 0.8 )',
+  color: 'white',
+ } );
+```
+
+### Legacy `Date` objects
+
+Note that if you use the legacy format and don't specify any timezone the browser will infer from the browser's local time:
+```javascript
+$('#counter').countdownCube( {
+  /* target time in the local timezone of the browser */
+  target: new Date('2018-03-01T10:00:00'),
+  cubeSize: 50,
+  background: 'rgba( 255, 150, 150, 0.8 )',
+  color: 'white',
+ } );
+```
+
+You can force UTC in the adding a `Z` at the end of the time string, as specified in the ISO 8601:
+```
+$('#counter').countdownCube( {
+  /* target time in UTC */
+  target: new Date( '2018-03-01T10:00:00Z' ),
   cubeSize: 50,
   background: 'rgba( 255, 150, 150, 0.8 )',
   color: 'white',
