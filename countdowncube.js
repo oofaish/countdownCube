@@ -321,7 +321,7 @@
                 yearsToShow = 0;
                 monthsToShow = 0;
 
-                days = Math.ceil((options.target-now) / (1000 * 3600 * 24));
+                days = Math.floor((options.target-now) / (1000 * 3600 * 24));
                 if( days == 0 ) {
                     daysToShow = 0;
                 }
@@ -373,7 +373,7 @@
             }
         },
     };
-    
+
     /**********************************************************
      ** Plugin
      ** definition of the plugin function
@@ -384,7 +384,7 @@
         helpers.init( element, options );
         //add the options to the data, so we know what state we are in
         element.data( 'countdownCube', options );
-    }
+    };
     
     /***********************************************************
      ** Actual attachment to jQuery
