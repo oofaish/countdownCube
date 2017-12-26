@@ -19,8 +19,21 @@
 
     <h2>Example 1</h2>
     <pre>
+      $('#counter').countdownCube( {
+        target: '2018-03-01T10:00:00Z',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'blue',
+        } );
+    </pre>
+    <div id='counter' class='counter'></div>
+
+    <br />
+
+    <h2>Example 2</h2>
+    <pre>
       $('#counter-days-only').countdownCube( {
-        target: new Date( 'March 1, 2018 10:00:00' ),
+        target: '2018-03-01T10:00:00Z',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'red',
@@ -38,24 +51,67 @@
 
     <br />
 
-    <h2>Example 2</h2>
+    <h2>Example 3</h2>
+    <p>Timezone support can be added with the <a href="http://momentjs.com/"><code>moment.js</code></a> and  <a href="http://momentjs.com/timezone/"><code>moment-timezone.js</code></a> libraries.</p>
+
     <pre>
+      $('#counter-timezone-default').countdownCube( {
+        target: '2018-03-01T10:00:00Z',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'black',
+        } );
+      $('#counter-timezone-new-york').countdownCube( {
+        target: '2018-03-01T10:00:00Z',
+        targetTimezone: 'America/New_York',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'green',
+        } );
+      $('#counter-timezone-los-angeles').countdownCube( {
+        target: '2018-03-01T10:00:00Z',
+        targetTimezone: 'America/Los_Angeles',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'pink',
+        } );
+    </pre>
+    <div id='counter-timezone-default' class='counter'></div>
+    <div id='counter-timezone-new-york' class='counter'></div>
+    <div id='counter-timezone-los-angeles' class='counter'></div>
+
+    <br />
+
+    <h2>Example 4</h2>
+    <p>If the built-in <code>Date</code> is used then the local time of the browser is inferred and the timezone argument is effectively ignored, beware that this behavior could be inconsistent across browsers.</p>
+    <pre>
+      $('#counter-date').countdownCube( {
+        target: new Date('2018-03-01T10:00:00Z'),
+        targetTimezone: 'America/Los_Angeles',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'brown',
+        } );
+    </pre>
+    <div id='counter-date' class='counter'></div>
+
+
+    <p>Download the source code <a title="Countdown Cube Github" target="_blank" href="https://github.com/oofaish/countdownCube">here</a>.</p>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data-2012-2022.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="countdowncube.js"></script>
+    <script>
       $('#counter').countdownCube( {
-        target: new Date( 'March 1, 2018 10:00:00' ),
+        target: '2018-03-01T10:00:00Z',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'blue',
         } );
-    </pre>
-    <div id='counter' class='counter'></div>
 
-    <p>Download the source code <a title="Countdown Cube Github" target="_blank" href="https://github.com/oofaish/countdownCube">here</a>.</p>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="countdowncube.js"></script>
-    <script>
       $('#counter-days-only').countdownCube( {
-        target: new Date( 'March 1, 2018 10:00:00' ),
+        target: '2018-03-01T10:00:00Z',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'red',
@@ -69,11 +125,33 @@
         showDaysOnly: true,
         } );
 
-      $('#counter').countdownCube( {
-        target: new Date( 'March 1, 2018 10:00:00' ),
+      $('#counter-timezone-default').countdownCube( {
+        target: '2018-03-01T10:00:00Z',
         cubeSize: 150,
         background:  '#ffffff',
-        color: 'blue',
+        color: 'black',
+        } );
+      $('#counter-timezone-new-york').countdownCube( {
+        target: '2018-03-01T10:00:00Z',
+        targetTimezone: 'America/New_York',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'green',
+        } );
+      $('#counter-timezone-los-angeles').countdownCube( {
+        target: '2018-03-01T10:00:00Z',
+        targetTimezone: 'America/Los_Angeles',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'pink',
+        } );
+
+      $('#counter-date').countdownCube( {
+        target: new Date( 'March 1, 2018 10:00:00' ),
+        targetTimezone: 'America/Los_Angeles',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'brown',
         } );
     </script>
   </body>
