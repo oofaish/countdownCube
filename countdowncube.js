@@ -400,10 +400,17 @@
     ***********************************************************/
     $.fn.countdownCube.defaults = {
 
-            /*target: new Date(),*/
-            cubeSize: 50,
-            background: 'rgba( 255, 150, 150, 0.8 )',
-            color: 'white',
-        };
+        /*target: new Date(),*/
+        cubeSize: 50,
+        background: 'rgba( 255, 150, 150, 0.8 )',
+        color: 'white',
+        labelsTranslations: {'year': 'years',
+                             'month': 'months',
+                             'day': 'days',
+                             'hour': 'hours',
+                             'minute': 'minutes',
+                             'second': 'seconds'
+                             },
+    };
 
 })( jQuery, window, document );
