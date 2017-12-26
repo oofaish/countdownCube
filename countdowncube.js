@@ -50,6 +50,16 @@
         ** you call it
         ***********************************************************/
         init: function( element, options ) {
+            var target = null;
+            if ( typeof moment === "undefined" ) {
+                target = new Date(options.target);
+            }
+            else {
+                var targetDateString = moment.tz(options.target, options.targetTimezone).format();
+                target = new Date(targetDateString);
+            }
+            options.targetDateObject = target;
+
             //remove any existing elements
             element.find('*').remove();
 
@@ -110,8 +120,6 @@
                      
             this.setupAllCss( element, options );
 
-            /*actually use this offset so you handle people in different time zones*/
-            /*var offset = options.target.getTimezoneOffset() + 60;//in minutes;*/
 
             var that = this;
             /*set it up for the first time, and then set a timer, to refresh every second*/
@@ -275,6 +283,8 @@
         *        this way is potentially buggy.
         ***********************************************************/
         setTimeLeft: function( element, options ) {
+            var target = options.targetDateObject;
+
             //FIXME Create these using this.topTags so you are consistent
             var secCube     = element.find('#second .countdownCubeCube');
             var minCube     = element.find('#minute .countdownCubeCube');
@@ -288,27 +298,29 @@
 
             var now = new Date();
 
-            var diff = ( options.target - now ) / 1000.0;
+            var diff = ( target - now ) / 1000.0;
+
             if( diff < 0 ) {
                 clearInterval( element.data('countdownCube').refreshId );
                 return;
             }
-            var daysToShow, monthsToShow, hoursToShow, minutesToShow, secondsToShow;
+            var daysToShow, monthsToShow;
+            var hoursToShow, minutesToShow, secondsToShow;
 
-            var years   = options.target.getFullYear()  - now.getFullYear();
-            var months  = options.target.getMonth()     - now.getMonth();
-            var days    = options.target.getDate()      - now.getDate();
+            var years   = target.getFullYear()  - now.getFullYear();
+            var months  = target.getMonth()     - now.getMonth();
+            var days    = target.getDate()      - now.getDate();
 
-            var hours   = options.target.getHours()     - now.getHours();
-            var minutes = options.target.getMinutes()   - now.getMinutes();
-            var seconds = options.target.getSeconds()   - now.getSeconds();
+            var hours   = target.getHours()     - now.getHours();
+            var minutes = target.getMinutes()   - now.getMinutes();
+            var seconds = target.getSeconds()   - now.getSeconds();
 
             var copy;
 
             copy = new Date( now.getTime() );
             copy.setFullYear(copy.getFullYear() + years );
 
-            if( copy > options.target ) {
+            if( copy > target ) {
                 yearsToShow = years - 1;
                 monthsToShow = months + 12;
             }
@@ -321,7 +333,8 @@
                 yearsToShow = 0;
                 monthsToShow = 0;
 
-                days = Math.floor((options.target-now) / (1000 * 3600 * 24));
+                days = Math.floor((target-now) / (1000 * 3600 * 24));
+
                 if( days == 0 ) {
                     daysToShow = 0;
                 }
@@ -330,14 +343,16 @@
                 }
             }
             else {
-                //handle cases where the target day is on an earlier day in the month to now (e.g. now is 22nd, target day is 10th)
-                if( days < 0 || ( days == 0 && hours < 0 ) || ( days == 0 && hours == 0 && minutes < 0 ) || ( days == 0 && hours == 0 && minutes == 0 && seconds <= 0 ) )
-                {
+                // handle cases where the target day is on an earlier day in
+                // the month to now (e.g. now is 22nd, target day is 10th)
+                if( days < 0 || ( days == 0 && hours < 0 ) ||
+                      ( days == 0 && hours == 0 && minutes < 0 ) ||
+                      ( days == 0 && hours == 0 && minutes == 0 && seconds <= 0 ) ) {
                     var copy = new Date( now.getTime() );
                     copy.setDate(1);
                     copy.setMonth( now.getMonth() + 1 );
                     var diffToNextMonth = Math.round( ( copy - now ) / 1000 / 3600 / 24 ) - 1;
-                    daysToShow = options.target.getDate() + diffToNextMonth;
+                    daysToShow = target.getDate() + diffToNextMonth;
                     monthsToShow --;
                 }
                 else if( days == 0 ) {
@@ -346,16 +361,38 @@
                 else {
                     daysToShow = days;
                 }
+
+                // similarly to above, handle case when target hour is before the
+                // current hour
+                if( hours < 0 || ( hours == 0 && minutes < 0 ) ||
+                    ( hours == 0 && minutes == 0 && seconds <= 0 ) ) {
+                    daysToShow--;
+                }
             }
 
-            //similarly to above, handle case when target hour is before the current hour
-            if( hours < 0 || ( hours == 0 && minutes < 0 ) || ( hours == 0 && minutes == 0 && seconds <= 0 ) ) {
-                daysToShow --;
+            hoursToShow = hours;
+            minutesToShow = minutes;
+            secondsToShow = seconds;
+
+            if( minutes < 0 || ( minutes == 0 && seconds <= 0 ) ) {
+                hoursToShow--;
             }
 
-            hoursToShow = (hours + 24 ) % 24;
+            if( seconds <= 0 ) {
+                minutesToShow--;
+            }
 
-            diffTime = new Date( diff * 1000 );
+            hoursToShow = (hoursToShow + 24) % 24;
+            minutesToShow = (minutesToShow + 60) % 60;
+            secondsToShow = (secondsToShow + 60) % 60;
+
+            diffTime = new Date( yearsToShow,
+                                 monthsToShow,
+                                 daysToShow,
+                                 hoursToShow,
+                                 minutesToShow,
+                                 secondsToShow,
+                                 0 );
 
             secondsToShow = diffTime.getSeconds();
             minutesToShow = diffTime.getMinutes();
@@ -379,13 +416,14 @@
      ** definition of the plugin function
      ***********************************************************/
     function Plugin( element, userOptions ) {
-        var options = $.extend( {}, $.fn.countdownCube.defaults, userOptions );
-        
+        var options = $.extend( {},
+                                $.fn.countdownCube.defaults,
+                                userOptions );
         helpers.init( element, options );
         //add the options to the data, so we know what state we are in
         element.data( 'countdownCube', options );
     };
-    
+
     /***********************************************************
      ** Actual attachment to jQuery
      ***********************************************************/    
@@ -401,6 +439,7 @@
     $.fn.countdownCube.defaults = {
 
         /*target: new Date(),*/
+        targetTimezone: 'UTC',
         cubeSize: 50,
         background: 'rgba( 255, 150, 150, 0.8 )',
         color: 'white',
@@ -411,6 +450,7 @@
                              'minute': 'minutes',
                              'second': 'seconds'
                              },
+        showDaysOnly: false,
     };
 
 })( jQuery, window, document );
