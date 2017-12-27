@@ -56,20 +56,20 @@
 
     <pre>
       $('#counter-timezone-default').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: '2018-03-01T10:00:00',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'black',
         } );
       $('#counter-timezone-new-york').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: '2018-03-01T10:00:00',
         targetTimezone: 'America/New_York',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'green',
         } );
       $('#counter-timezone-los-angeles').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: '2018-03-01T10:00:00',
         targetTimezone: 'America/Los_Angeles',
         cubeSize: 150,
         background:  '#ffffff',
@@ -86,7 +86,7 @@
     <p>If the built-in <code>Date</code> is used then the local time of the browser is inferred and the timezone argument is effectively ignored, beware that this behavior could be inconsistent across browsers.</p>
     <pre>
       $('#counter-date').countdownCube( {
-        target: new Date('2018-03-01T10:00:00Z'),
+        target: new Date( 'March 1, 2018 10:00:00' ),
         targetTimezone: 'America/Los_Angeles',
         cubeSize: 150,
         background:  '#ffffff',
@@ -94,6 +94,15 @@
         } );
     </pre>
     <div id='counter-date' class='counter'></div>
+    <pre>
+      $('#counter-date-utc').countdownCube( {
+        target: new Date( '2018-03-01T10:00:00Z' ),
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'saddlebrown',
+        } );
+    </pre>
+    <div id='counter-date-utc' class='counter'></div>
 
 
     <p>Download the source code <a title="Countdown Cube Github" target="_blank" href="https://github.com/oofaish/countdownCube">here</a>.</p>
@@ -126,20 +135,20 @@
         } );
 
       $('#counter-timezone-default').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: '2018-03-01T10:00:00',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'black',
         } );
       $('#counter-timezone-new-york').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: '2018-03-01T10:00:00',
         targetTimezone: 'America/New_York',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'green',
         } );
       $('#counter-timezone-los-angeles').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: '2018-03-01T10:00:00',
         targetTimezone: 'America/Los_Angeles',
         cubeSize: 150,
         background:  '#ffffff',
@@ -152,6 +161,13 @@
         cubeSize: 150,
         background:  '#ffffff',
         color: 'brown',
+        } );
+      $('#counter-date-utc').countdownCube( {
+        target: new Date( '2018-03-01T10:00:00Z' ),
+        targetTimezone: 'America/Los_Angeles',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'saddlebrown',
         } );
     </script>
   </body>
