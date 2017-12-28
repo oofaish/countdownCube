@@ -322,8 +322,19 @@
                             this.shiftCube( element, options, yearCube, 0 );
                         }
 
-                        if ( options.triggerEnd && ! element.onEndCallbackTriggered ) {
-                            this.onEndCallback( element, options );
+                        if (diff > -1000) {
+                            // first tick of the clock where now > target
+                            if ( ! element.onEndCallbackTriggered ) {
+                                this.onEndCallback( element, options );
+                            }
+                        }
+                        else {
+                            // subsequent ticks or page reloaded when
+                            // now > target
+                            if ( options.triggerEnd &&
+                                    ! element.onEndCallbackTriggered ) {
+                                this.onEndCallback( element, options );
+                            }
                         }
 
                         element.timeEnded = true;
@@ -435,10 +446,6 @@
             if( ! options.showDaysOnly ) {
                 this.shiftCube( element, options, monthCube, monthsToShow );
                 this.shiftCube( element, options, yearCube, yearsToShow );
-            }
-
-            if (now - target > -1000) {
-                this.onEndCallback( element, options );
             }
         },
 
