@@ -63,6 +63,9 @@
             //remove any existing elements
             element.find('*').remove();
 
+            element.onEndCallbackTriggered = false;
+            element.timeEnded = false;
+
             //if a cube is already defined, remove it and clear the timer
             if( typeof element.data('countdownCubeId' ) != 'undefined' ) {
                 clearInterval( element.data('countdownCubeId' ) );
@@ -109,7 +112,9 @@
                                .data('side', 'show-front');
 
                     /*this is horrible, chaining would be much cooler*/
-                    this.addFigures( cube, this.classes, this.loadingTags[ tagIndex ] );
+                    this.addFigures( cube,
+                                     this.classes,
+                                     this.loadingTags[ tagIndex ] );
 
                     element.children(':last')
                         .append('<div></div>')
@@ -303,12 +308,30 @@
             if( diff < 0 ) {
                 if ( typeof element.data('countdownCube') != "undefined" ) {
                     clearInterval( element.data('countdownCube').refreshId );
-                }
-                if ( options.triggerEnd && ! this.timeEndedTriggered ) {
-                    this.timeEnded( element, options );
+
+                    if ( ! element.timeEnded ) {
+
+                        /* counter at 0:0:0:0:0:0 when now > target */
+                        this.shiftCube( element, options, secCube, 0 );
+                        this.shiftCube( element, options, minCube, 0 );
+                        this.shiftCube( element, options, hourCube, 0 );
+                        this.shiftCube( element, options, dayCube, 0 );
+
+                        if( ! options.showDaysOnly ) {
+                            this.shiftCube( element, options, monthCube, 0 );
+                            this.shiftCube( element, options, yearCube, 0 );
+                        }
+
+                        if ( options.triggerEnd && ! element.onEndCallbackTriggered ) {
+                            this.onEndCallback( element, options );
+                        }
+
+                        element.timeEnded = true;
+                    }
                 }
                 return;
             }
+
             var daysToShow, monthsToShow;
             var hoursToShow, minutesToShow, secondsToShow;
 
@@ -415,19 +438,18 @@
             }
 
             if (now - target > -1000) {
-                this.timeEnded( element, options );
+                this.onEndCallback( element, options );
             }
         },
 
-        timeEndedTriggered: false,
-        timeEnded: function( element, options ) {
+        onEndCallback: function( element, options ) {
             $(document).on("countertimeEnded", options.onEnd);
             $.event.trigger({
                 type: "countertimeEnded",
                 source: element.context.id,
                 time: new Date(),
             });
-            this.timeEndedTriggered = true;
+            element.onEndCallbackTriggered = true;
             return;
         },
     };
