@@ -116,4 +116,16 @@ $('#counter-days-only').countdownCube( {
 } );
 ```
 
+* `onEnd`: expects a function that is triggered when the counter reaches the end. The default does nothing. A typical use is hiding the counter and showing a different - previously invisible - element of the page. This gives the effect of something appearing when the countdown ends. Here's an example:
+```
+$('#counter').countdownCube( {
+  target: '2018-12-03T11:00:00Z',
+  onEnd: function(e) {
+           $('#counter').hide();
+           $('#after').show();
+         },
+  } );
+```
+* `triggerEnd`: the default is `false`, if set to `true` triggers the `onEnd` function even after the countdown has expired. Otherwise the counter shows the writing `LOADING...`.
+
 Copyright (c) 2013 Ali Cigari @oofaish

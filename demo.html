@@ -59,7 +59,7 @@
         target: '2018-03-01T10:00:00',
         cubeSize: 150,
         background:  '#ffffff',
-        color: 'black',
+        color: 'forestgreen',
         } );
       $('#counter-timezone-new-york').countdownCube( {
         target: '2018-03-01T10:00:00',
@@ -73,7 +73,7 @@
         targetTimezone: 'America/Los_Angeles',
         cubeSize: 150,
         background:  '#ffffff',
-        color: 'pink',
+        color: 'chartreuse',
         } );
     </pre>
     <div id='counter-timezone-default' class='counter'></div>
@@ -105,6 +105,53 @@
     <div id='counter-date-utc' class='counter'></div>
 
 
+    <h2>Example 5</h2>
+    <pre>
+      in65seconds = new Date();
+      in65seconds.setSeconds(in65seconds.getSeconds() + 65);
+      $('#counter-end').countdownCube( {
+        target: in65seconds.toISOString(),
+        targetTimezone: 'UTC',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'grey',
+        onEnd: function(e) {
+          $("#counter-end").text('This is the end!');
+        }
+      } );
+    </pre>
+    <div id='counter-end' class='counter'></div>
+
+    <h2>Example 6</h2>
+    <pre>
+      $('#counter-end-notrigger').countdownCube( {
+        target: '2017-12-28T10:00:00',
+        targetTimezone: 'UTC',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'darkcyan',
+        onEnd: function(e) {
+          $("#counter-end-notrigger").text('This was the end, but it was not triggered!');
+        }
+      } );
+    </pre>
+    <div id='counter-end-notrigger' class='counter'></div>
+    <br />
+    <pre>
+      $('#counter-end-trigger').countdownCube( {
+        target: '2017-12-28T10:00:00',
+        targetTimezone: 'UTC',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'cyan',
+        onEnd: function(e) {
+          $("#counter-end-trigger").text('This was the end and it was triggered!');
+        },
+        triggerEnd: true,
+      } );
+    </pre>
+    <div id='counter-end-trigger' class='counter'></div>
+
     <p>Download the source code <a title="Countdown Cube Github" target="_blank" href="https://github.com/oofaish/countdownCube">here</a>.</p>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
@@ -117,7 +164,7 @@
         cubeSize: 150,
         background:  '#ffffff',
         color: 'blue',
-        } );
+      } );
 
       $('#counter-days-only').countdownCube( {
         target: '2018-03-01T10:00:00Z',
@@ -132,28 +179,28 @@
                              'second': 'secondi'
                              },
         showDaysOnly: true,
-        } );
+      } );
 
       $('#counter-timezone-default').countdownCube( {
         target: '2018-03-01T10:00:00',
         cubeSize: 150,
         background:  '#ffffff',
-        color: 'black',
-        } );
+        color: 'forestgreen',
+      } );
       $('#counter-timezone-new-york').countdownCube( {
         target: '2018-03-01T10:00:00',
         targetTimezone: 'America/New_York',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'green',
-        } );
+      } );
       $('#counter-timezone-los-angeles').countdownCube( {
         target: '2018-03-01T10:00:00',
         targetTimezone: 'America/Los_Angeles',
         cubeSize: 150,
         background:  '#ffffff',
-        color: 'pink',
-        } );
+        color: 'chartreuse',
+      } );
 
       $('#counter-date').countdownCube( {
         target: new Date( 'March 1, 2018 10:00:00' ),
@@ -161,14 +208,49 @@
         cubeSize: 150,
         background:  '#ffffff',
         color: 'brown',
-        } );
+      } );
       $('#counter-date-utc').countdownCube( {
         target: new Date( '2018-03-01T10:00:00Z' ),
         targetTimezone: 'America/Los_Angeles',
         cubeSize: 150,
         background:  '#ffffff',
         color: 'saddlebrown',
-        } );
+      } );
+
+      in65seconds = new Date();
+      in65seconds.setSeconds(in65seconds.getSeconds() + 65);
+      $('#counter-end').countdownCube( {
+        target: in65seconds.toISOString(),
+        targetTimezone: 'UTC',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'grey',
+        onEnd: function(e) {
+          $("#counter-end").text('This is the end!');
+        }
+      } );
+
+      $('#counter-end-notrigger').countdownCube( {
+        target: '2017-12-28T10:00:00',
+        targetTimezone: 'UTC',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'darkcyan',
+        onEnd: function(e) {
+          $("#counter-end-notrigger").text('This was the end, but it was not triggered!');
+        }
+      } );
+      $('#counter-end-trigger').countdownCube( {
+        target: '2017-12-28T10:00:00',
+        targetTimezone: 'UTC',
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'cyan',
+        onEnd: function(e) {
+          $("#counter-end-trigger").text('This was the end, and it was triggered!');
+        },
+        triggerEnd: true,
+      } );
     </script>
   </body>
 </html>

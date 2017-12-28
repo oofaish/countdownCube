@@ -15,7 +15,7 @@
     **
     ** basically where all the function are defined
     ***********************************************************/
-    var helpers = { 
+    var helpers = {
 
         has3d: function()
         {
@@ -127,7 +127,7 @@
             setTimeout( function(){ that.setTimeLeft( element, options );}, 10 );
             var refreshId = setInterval( function(){ that.setTimeLeft( element, options );}, 1000 );
             element.data('countdownCubeId', refreshId );
-                
+
             if ( !this.has3d() ) {
                 element.append("<p>Your Browser/Computer Sucks - It doesnt support 3d Transforms!</p>");
             }
@@ -301,7 +301,12 @@
             var diff = ( target - now ) / 1000.0;
 
             if( diff < 0 ) {
-                clearInterval( element.data('countdownCube').refreshId );
+                if ( typeof element.data('countdownCube') != "undefined" ) {
+                    clearInterval( element.data('countdownCube').refreshId );
+                }
+                if ( options.triggerEnd && ! this.timeEndedTriggered ) {
+                    this.timeEnded( element, options );
+                }
                 return;
             }
             var daysToShow, monthsToShow;
@@ -408,6 +413,22 @@
                 this.shiftCube( element, options, monthCube, monthsToShow );
                 this.shiftCube( element, options, yearCube, yearsToShow );
             }
+
+            if (now - target > -1000) {
+                this.timeEnded( element, options );
+            }
+        },
+
+        timeEndedTriggered: false,
+        timeEnded: function( element, options ) {
+            $(document).on("countertimeEnded", options.onEnd);
+            $.event.trigger({
+                type: "countertimeEnded",
+                source: element.context.id,
+                time: new Date(),
+            });
+            this.timeEndedTriggered = true;
+            return;
         },
     };
 
@@ -451,6 +472,8 @@
                              'second': 'seconds'
                              },
         showDaysOnly: false,
+        onEnd: function(e) { return; },
+        triggerEnd: false,
     };
 
 })( jQuery, window, document );
