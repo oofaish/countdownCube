@@ -76,34 +76,51 @@
         color: 'chartreuse',
         } );
     </pre>
+    <h3 style="text-align: center;">UTC</h3>
     <div id='counter-timezone-default' class='counter'></div>
+    <h3 style="text-align: center;">New York</h3>
     <div id='counter-timezone-new-york' class='counter'></div>
+    <h3 style="text-align: center;">Los Angeles</h3>
     <div id='counter-timezone-los-angeles' class='counter'></div>
 
     <br />
 
     <h2>Example 4</h2>
-    <p>If the built-in <code>Date</code> is used then the local time of the browser is inferred and the timezone argument is effectively ignored, beware that this behavior could be inconsistent across browsers.</p>
+    <p>If the built-in <code>Date</code> is used then the local time of the browser is inferred and <span style="color:red;"><strong>the timezone argument is effectively ignored</strong></span>, beware that this behavior could be inconsistent across browsers.</p>
     <pre>
       $('#counter-date').countdownCube( {
-        target: new Date( 'March 1, 2018 10:00:00' ),
-        targetTimezone: 'America/Los_Angeles',
+        target: new Date( 'March 1, 2018 10:00:00' ),  // local time
+        targetTimezone: 'America/Los_Angeles',         // ignored
         cubeSize: 150,
         background:  '#ffffff',
-        color: 'brown',
-        } );
+        color: 'sienna',
+      } );
     </pre>
+    <h3 style="text-align: center;">Should be Los Angeles, but it's local time</h3>
     <div id='counter-date' class='counter'></div>
+    <p>If you use the legacy <code>Date</code> object, <i>be explicit</i> with timezone in the target string.</p>
+    <p>Adding a <code>Z</code> at the end means UTC (<a target="_blank" href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>), otherwise you can specify the offset from UTC using the format <code>&plusmn;hh:mm</code>.</p>
     <pre>
       $('#counter-date-utc').countdownCube( {
-        target: new Date( '2018-03-01T10:00:00Z' ),
+        target: new Date( '2018-03-01T10:00:00Z' ),  // UTC
+        targetTimezone: 'America/Los_Angeles',       // ignored
         cubeSize: 150,
         background:  '#ffffff',
         color: 'saddlebrown',
-        } );
+      } );
     </pre>
+    <h3 style="text-align: center;">UTC (2018-03-01T10:00:00Z)</h3>
     <div id='counter-date-utc' class='counter'></div>
-
+    <h3 style="text-align: center;">UTC (2018-03-01T10:00:00-08:00)</h3>
+    <pre>
+      $('#counter-date-los-angeles').countdownCube( {
+        target: new Date( '2018-03-01T10:00:00-08:00' ), // offeset from UTC
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'brown',
+      } );
+    </pre>
+    <div id='counter-date-los-angeles' class='counter'></div>
 
     <h2>Example 5</h2>
     <pre>
@@ -130,8 +147,13 @@
         cubeSize: 150,
         background:  '#ffffff',
         color: 'darkcyan',
+        /*
+           target is in the past and triggerEnd is false,
+           so onEnd is not triggered when the page is loaded
+        */
         onEnd: function(e) {
-          $("#counter-end-notrigger").text('This was the end, but it was not triggered!');
+          $("#counter-end-notrigger")
+            .text('This was the end, but it was not triggered!');
         }
       } );
     </pre>
@@ -203,19 +225,26 @@
       } );
 
       $('#counter-date').countdownCube( {
-        target: new Date( 'March 1, 2018 10:00:00' ),
-        targetTimezone: 'America/Los_Angeles',
+        target: new Date( 'March 1, 2018 10:00:00' ),  // local time
+        targetTimezone: 'America/Los_Angeles',         // ignored
         cubeSize: 150,
         background:  '#ffffff',
-        color: 'brown',
+        color: 'sienna',
       } );
       $('#counter-date-utc').countdownCube( {
-        target: new Date( '2018-03-01T10:00:00Z' ),
-        targetTimezone: 'America/Los_Angeles',
+        target: new Date( '2018-03-01T10:00:00Z' ),  // UTC
+        targetTimezone: 'America/Los_Angeles',       // ignored
         cubeSize: 150,
         background:  '#ffffff',
         color: 'saddlebrown',
       } );
+      $('#counter-date-los-angeles').countdownCube( {
+        target: new Date( '2018-03-01T10:00:00-08:00' ), // offeset from UTC
+        cubeSize: 150,
+        background:  '#ffffff',
+        color: 'brown',
+      } );
+
 
       in65seconds = new Date();
       in65seconds.setSeconds(in65seconds.getSeconds() + 65);
@@ -236,8 +265,13 @@
         cubeSize: 150,
         background:  '#ffffff',
         color: 'darkcyan',
+        /*
+           target is in the past and triggerEnd is false,
+           so onEnd is not triggered when the page is loaded
+        */
         onEnd: function(e) {
-          $("#counter-end-notrigger").text('This was the end, but it was not triggered!');
+          $("#counter-end-notrigger")
+            .text('This was the end, but it was not triggered!');
         }
       } );
       $('#counter-end-trigger').countdownCube( {
