@@ -15,7 +15,7 @@
     **
     ** basically where all the function are defined
     ***********************************************************/
-    var helpers = { 
+    var helpers = {
 
         has3d: function()
         {
@@ -63,6 +63,9 @@
             //remove any existing elements
             element.find('*').remove();
 
+            element.onEndCallbackTriggered = false;
+            element.timeEnded = false;
+
             //if a cube is already defined, remove it and clear the timer
             if( typeof element.data('countdownCubeId' ) != 'undefined' ) {
                 clearInterval( element.data('countdownCubeId' ) );
@@ -109,7 +112,9 @@
                                .data('side', 'show-front');
 
                     /*this is horrible, chaining would be much cooler*/
-                    this.addFigures( cube, this.classes, this.loadingTags[ tagIndex ] );
+                    this.addFigures( cube,
+                                     this.classes,
+                                     this.loadingTags[ tagIndex ] );
 
                     element.children(':last')
                         .append('<div></div>')
@@ -127,7 +132,7 @@
             setTimeout( function(){ that.setTimeLeft( element, options );}, 10 );
             var refreshId = setInterval( function(){ that.setTimeLeft( element, options );}, 1000 );
             element.data('countdownCubeId', refreshId );
-                
+
             if ( !this.has3d() ) {
                 element.append("<p>Your Browser/Computer Sucks - It doesnt support 3d Transforms!</p>");
             }
@@ -301,9 +306,43 @@
             var diff = ( target - now ) / 1000.0;
 
             if( diff < 0 ) {
-                clearInterval( element.data('countdownCube').refreshId );
+                if ( typeof element.data('countdownCube') != "undefined" ) {
+                    clearInterval( element.data('countdownCube').refreshId );
+
+                    if ( ! element.timeEnded ) {
+
+                        /* counter at 0:0:0:0:0:0 when now > target */
+                        this.shiftCube( element, options, secCube, 0 );
+                        this.shiftCube( element, options, minCube, 0 );
+                        this.shiftCube( element, options, hourCube, 0 );
+                        this.shiftCube( element, options, dayCube, 0 );
+
+                        if( ! options.showDaysOnly ) {
+                            this.shiftCube( element, options, monthCube, 0 );
+                            this.shiftCube( element, options, yearCube, 0 );
+                        }
+
+                        if (diff > -1000) {
+                            // first tick of the clock where now > target
+                            if ( ! element.onEndCallbackTriggered ) {
+                                this.onEndCallback( element, options );
+                            }
+                        }
+                        else {
+                            // subsequent ticks or page reloaded when
+                            // now > target
+                            if ( options.triggerEnd &&
+                                    ! element.onEndCallbackTriggered ) {
+                                this.onEndCallback( element, options );
+                            }
+                        }
+
+                        element.timeEnded = true;
+                    }
+                }
                 return;
             }
+
             var daysToShow, monthsToShow;
             var hoursToShow, minutesToShow, secondsToShow;
 
@@ -409,6 +448,17 @@
                 this.shiftCube( element, options, yearCube, yearsToShow );
             }
         },
+
+        onEndCallback: function( element, options ) {
+            $(document).on("countertimeEnded", options.onEnd);
+            $.event.trigger({
+                type: "countertimeEnded",
+                source: element.context.id,
+                time: new Date(),
+            });
+            element.onEndCallbackTriggered = true;
+            return;
+        },
     };
 
     /**********************************************************
@@ -451,6 +501,8 @@
                              'second': 'seconds'
                              },
         showDaysOnly: false,
+        onEnd: function(e) { return; },
+        triggerEnd: false,
     };
 
 })( jQuery, window, document );
