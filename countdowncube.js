@@ -454,6 +454,7 @@
             $.event.trigger({
                 type: "countertimeEnded",
                 source: element.context.id,
+                options: options,
                 time: new Date(),
             });
             element.onEndCallbackTriggered = true;
