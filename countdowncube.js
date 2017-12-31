@@ -423,19 +423,29 @@
 
             hoursToShow = (hoursToShow + 24) % 24;
             minutesToShow = (minutesToShow + 60) % 60;
-            secondsToShow = (secondsToShow + 60) % 60;
 
-            diffTime = new Date( yearsToShow,
-                                 monthsToShow,
-                                 daysToShow,
-                                 hoursToShow,
-                                 minutesToShow,
-                                 secondsToShow,
-                                 0 );
+            secondsToShow = (secondsToShow + 60);
+            if( years == 0 && months == 0 && days == 0 && hours == 0 &&
+                    ( (minutes == 1 && seconds == 0) ||
+                      (minutes == 0 && seconds == 60) )
+              ) {
+                hoursToShow = 0;
+                minutesToShow = 0;
+                secondsToShow = 60;
+            } else {
+                secondsToShow = secondsToShow % 60;
+                diffTime = new Date( yearsToShow,
+                                     monthsToShow,
+                                     daysToShow,
+                                     hoursToShow,
+                                     minutesToShow,
+                                     secondsToShow,
+                                     0 );
 
-            secondsToShow = diffTime.getSeconds();
-            minutesToShow = diffTime.getMinutes();
-            hoursToShow   = diffTime.getHours();
+                secondsToShow = diffTime.getSeconds();
+                minutesToShow = diffTime.getMinutes();
+                hoursToShow   = diffTime.getHours();
+            }
 
             /* make each cube an object on its own with a feature to shift it!*/
             this.shiftCube( element, options, secCube, secondsToShow );
@@ -454,6 +464,7 @@
             $.event.trigger({
                 type: "countertimeEnded",
                 source: element.context.id,
+                options: options,
                 time: new Date(),
             });
             element.onEndCallbackTriggered = true;

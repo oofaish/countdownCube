@@ -18,11 +18,11 @@
     <h1>countdownCube</h1>
 
     <h2>Example 1</h2>
-    <pre>
+    <pre class="example">
       $('#counter').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: '{targetDateStringUTC}',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  '#ffff00',
         color: 'blue',
         } );
     </pre>
@@ -31,11 +31,11 @@
     <br />
 
     <h2>Example 2</h2>
-    <pre>
+    <pre class="example">
       $('#counter-days-only').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: '{targetDateStringUTC}',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'plum',
         color: 'red',
         labelsTranslations: {'year': 'anni',
                              'month': 'mesi',
@@ -54,102 +54,259 @@
     <h2>Example 3</h2>
     <p>Timezone support can be added with the <a href="http://momentjs.com/"><code>moment.js</code></a> and  <a href="http://momentjs.com/timezone/"><code>moment-timezone.js</code></a> libraries.</p>
 
-    <pre>
+    <pre class="example">
       $('#counter-timezone-default').countdownCube( {
-        target: '2018-03-01T10:00:00',
+        target: '{targetDateString}',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'azure',
         color: 'forestgreen',
         } );
+    </pre>
+    <pre class="example">
       $('#counter-timezone-new-york').countdownCube( {
-        target: '2018-03-01T10:00:00',
+        target: '{targetDateString}',
         targetTimezone: 'America/New_York',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'azure',
         color: 'green',
         } );
+    </pre>
+    <pre class="example">
       $('#counter-timezone-los-angeles').countdownCube( {
-        target: '2018-03-01T10:00:00',
+        target: '{targetDateString}',
         targetTimezone: 'America/Los_Angeles',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'azure',
         color: 'chartreuse',
         } );
     </pre>
+    <h3 style="text-align: center;">UTC</h3>
     <div id='counter-timezone-default' class='counter'></div>
+    <h3 style="text-align: center;">New York</h3>
     <div id='counter-timezone-new-york' class='counter'></div>
+    <h3 style="text-align: center;">Los Angeles</h3>
     <div id='counter-timezone-los-angeles' class='counter'></div>
 
     <br />
 
     <h2>Example 4</h2>
-    <p>If the built-in <code>Date</code> is used then the local time of the browser is inferred and the timezone argument is effectively ignored, beware that this behavior could be inconsistent across browsers.</p>
-    <pre>
+    <p>If the built-in <code>Date</code> is used then the local time of the browser is inferred and <span style="color:red;"><strong>the timezone argument is effectively ignored</strong></span>, beware that this behavior could be inconsistent across browsers.</p>
+    <pre class="example">
       $('#counter-date').countdownCube( {
-        target: new Date( 'March 1, 2018 10:00:00' ),
-        targetTimezone: 'America/Los_Angeles',
+        target: new Date( '{targetDateOldFormatString}' ),  // local time
+        targetTimezone: 'America/Los_Angeles', // ignored
         cubeSize: 150,
-        background:  '#ffffff',
-        color: 'brown',
-        } );
+        background:  'mistyrose',
+        color: 'sienna',
+      } );
     </pre>
+    <h3 style="text-align: center;">Should be Los Angeles, but it's local time</h3>
     <div id='counter-date' class='counter'></div>
-    <pre>
+    <p>If you use the legacy <code>Date</code> object, <i>be explicit</i> with timezone in the target string.</p>
+    <p>Adding a <code>Z</code> at the end means UTC (<a target="_blank" href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>), otherwise you can specify the offset from UTC using the format <code>&plusmn;hh:mm</code>.</p>
+    <pre class="example">
       $('#counter-date-utc').countdownCube( {
-        target: new Date( '2018-03-01T10:00:00Z' ),
+        target: new Date( '{targetDateStringUTC}' ),  // UTC
+        targetTimezone: 'America/Los_Angeles',  // ignored
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'mistyrose',
         color: 'saddlebrown',
-        } );
+      } );
     </pre>
+    <h3 class="example" style="text-align: center;">UTC ({targetDateStringUTC})</h3>
     <div id='counter-date-utc' class='counter'></div>
-
+    <h3 class="example" style="text-align: center;">UTC ({targetDateStringOffset})</h3>
+    <pre class="example">
+      $('#counter-date-los-angeles').countdownCube( {
+        target: new Date( '{targetDateStringOffset}' ),  // offset from UTC
+        cubeSize: 150,
+        background:  'mistyrose',
+        color: 'brown',
+      } );
+    </pre>
+    <div id='counter-date-los-angeles' class='counter'></div>
 
     <h2>Example 5</h2>
-    <pre>
-      in65seconds = new Date();
-      in65seconds.setSeconds(in65seconds.getSeconds() + 65);
+    <pre class="example">
       $('#counter-end').countdownCube( {
-        target: in65seconds.toISOString(),
+        target: '{nearFutureDateString}',  // now + 10 seconds
         targetTimezone: 'UTC',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'whitesmoke',
         color: 'grey',
         onEnd: function(e) {
           $("#counter-end").text('This is the end!');
         }
       } );
     </pre>
+    <div style="text-align: center; padding-bottom: 1em;">
+      <script type="text/javascript">
+        function counterEndOnEnd(e) {
+          $("#counter-end").text('This is the end!');
+        }
+
+        function reloadCounterEnd() {
+          var reloadTime = new Date();
+          reloadTime.setSeconds(reloadTime.getSeconds() + 10);
+          reloadTime.setMilliseconds(0);
+          var reloadTimeString = reloadTime.toISOString()
+
+          reloadCounter('#counter-end',
+                        reloadTimeString,
+                        'UTC',
+                        150,
+                        'whitesmoke',
+                        'grey',
+                        counterEndOnEnd,
+                        false);
+        }
+      </script>
+      <button onclick="reloadCounterEnd()">
+        Reload
+      </button>
+    </div>
     <div id='counter-end' class='counter'></div>
 
+
     <h2>Example 6</h2>
-    <pre>
+    <pre class="example">
       $('#counter-end-notrigger').countdownCube( {
-        target: '2017-12-28T10:00:00',
+        target: '{targetDateStringPast}',
         targetTimezone: 'UTC',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'lightcyan',
         color: 'darkcyan',
+        /*
+           target is in the past and triggerEnd is false,
+           so onEnd is not triggered when the page is loaded
+        */
         onEnd: function(e) {
-          $("#counter-end-notrigger").text('This was the end, but it was not triggered!');
+          $("#counter-end-notrigger")
+            .text('This was the end, but it was not triggered! ' +
+                  '(counter original target: ' +
+                  e.options.targetDateObject.toISOString() +
+                  ')');
         }
       } );
     </pre>
+      <script type="text/javascript">
+        function counterEndNoTriggerOnEnd(e) {
+          $("#counter-end-notrigger")
+            .text('This was the end, but it was not triggered! ' +
+                  '(counter original target: ' +
+                  e.options.targetDateObject.toISOString() +
+                  ')');
+        }
+
+        function counterEndNoTriggerOnEnd_trigger(e) {
+          $("#counter-end-notrigger")
+            .text('This was the end, this time it was triggered! ' +
+                  '(counter original target: ' +
+                  e.options.targetDateObject.toISOString() +
+                  ')');
+        }
+
+        function counterEndNoTriggerOnEnd_triggerFuture(e) {
+          $("#counter-end-notrigger")
+            .text('This is the end, if it is in the future it is triggered! ' +
+                  '(counter original target: ' +
+                  e.options.targetDateObject.toISOString() +
+                  ')');
+        }
+
+        function reloadCounterEndNoTrigger() {
+          reloadCounter('#counter-end-notrigger',
+                        targetDateStringPast,
+                        'UTC',
+                        150,
+                        'lightcyan',
+                        'darkcyan',
+                        counterEndNoTriggerOnEnd,
+                        false);
+        }
+
+        function reloadCounterEndNoTrigger_trigger() {
+          reloadCounter('#counter-end-notrigger',
+                        targetDateStringPast,
+                        'UTC',
+                        150,
+                        'lightcyan',
+                        'darkcyan',
+                        counterEndNoTriggerOnEnd_trigger,
+                        true);
+        }
+
+        function reloadCounterEndNoTrigger_triggerFuture() {
+          var reloadTime = new Date();
+          reloadTime.setSeconds(reloadTime.getSeconds() + 10);
+          reloadTime.setMilliseconds(0);
+          var reloadTimeString = reloadTime.toISOString()
+
+          reloadCounter('#counter-end-notrigger',
+                        reloadTimeString,
+                        'UTC',
+                        150,
+                        'lightcyan',
+                        'darkcyan',
+                        counterEndNoTriggerOnEnd_triggerFuture,
+                        false);
+        }
+      </script>
+    <div style="text-align: center; padding-bottom: 1em;">
+      <button onclick="reloadCounterEndNoTrigger()" style="margin-bottom: 1em;">
+        Reload (with triggerEnd: false)
+      </button>
+      <button onclick="reloadCounterEndNoTrigger_trigger()" style="margin-bottom: 1em;">
+        Reload (with triggerEnd: true)
+      </button>
+      <button onclick="reloadCounterEndNoTrigger_triggerFuture()">
+        Reload (with future time and triggerEnd: false)
+      </button>
+    </div>
     <div id='counter-end-notrigger' class='counter'></div>
     <br />
-    <pre>
+    <pre class="example">
       $('#counter-end-trigger').countdownCube( {
-        target: '2017-12-28T10:00:00',
+        target: '{targetDateStringPast}',
         targetTimezone: 'UTC',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'lightcyan',
         color: 'cyan',
         onEnd: function(e) {
-          $("#counter-end-trigger").text('This was the end and it was triggered!');
+          $("#counter-end-trigger")
+            .text('This was the end and it was triggered! ' +
+                  '(counter original target: ' +
+                  e.options.targetDateObject.toISOString() +
+                  ')');
         },
         triggerEnd: true,
       } );
     </pre>
+    <div style="text-align: center; padding-bottom: 1em;">
+      <script type="text/javascript">
+        function counterEndTriggerOnEnd(e) {
+          $("#counter-end-trigger")
+            .text('This was the end and it was triggered! ' +
+                  '(counter original target: ' +
+                  e.options.targetDateObject.toISOString() +
+                  ')');
+        }
+
+        function reloadCounterEndTrigger() {
+          reloadCounter('#counter-end-trigger',
+                        targetDateStringPast,
+                        'UTC',
+                        150,
+                        'lightcyan',
+                        'darkcyan',
+                        counterEndTriggerOnEnd,
+                        true);
+        }
+      </script>
+      <button onclick="reloadCounterEndTrigger()">
+        Reload
+      </button>
+    </div>
     <div id='counter-end-trigger' class='counter'></div>
 
     <p>Download the source code <a title="Countdown Cube Github" target="_blank" href="https://github.com/oofaish/countdownCube">here</a>.</p>
@@ -159,17 +316,95 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="countdowncube.js"></script>
     <script>
+      var targetDate = new Date();
+      targetDate.setMonth(targetDate.getMonth() + 18)
+      targetDate.setDate(1)
+      targetDate.setHours(11)
+      targetDate.setMinutes(0)
+      targetDate.setSeconds(0)
+      targetDate.setMilliseconds(0);
+
+      var targetDateStringUTC = targetDate.toISOString()
+                                          .replace(':00.000', '');
+      var targetDateString = targetDateStringUTC.replace('Z', '');
+
+      var targetLADate = moment.tz(targetDateStringUTC,
+                                   'America/Los_Angeles').format();
+      var tzLAOffset = targetLADate.substr(-6);
+      var targetDateStringOffset = targetDateString.replace('Z', '')
+                                       .replace(':00.000', '') +
+                                       tzLAOffset;
+
+      var tzOldFormatOffset = targetDateString.substr(-5);
+      var targetDateOldFormatString = targetDate.toLocaleDateString() +
+                                      ' ' + tzOldFormatOffset;
+
+      var pastDate = new Date();
+      pastDate.setMonth(targetDate.getMonth() - 18)
+      pastDate.setMinutes(0);
+      pastDate.setSeconds(0);
+      pastDate.setMilliseconds(0);
+      var targetDateStringPast = pastDate.toISOString()
+                                         .replace(':00.000', '');
+      var nearFutureDate = new Date();
+      nearFutureDate.setSeconds(nearFutureDate.getSeconds() + 10);
+      nearFutureDate.setMilliseconds(0);
+      var nearFutureDateString = nearFutureDate.toISOString()
+
+      $('.example').each(function() {
+        var str = $( this ).html()
+        var newstr = str.replace("{targetDateString}",
+                             targetDateString )
+                    .replace("{targetDateStringUTC}",
+                             targetDateStringUTC )
+                    .replace("{targetDateStringOffset}",
+                             targetDateStringOffset )
+                    .replace("{targetDateOldFormatString}",
+                             targetDateOldFormatString )
+                    .replace("{nearFutureDateString}",
+                             nearFutureDateString )
+                    .replace("{targetDateStringPast}",
+                             targetDateStringPast );
+
+        $( this ).html(newstr);
+      } );
+
+      // reload element with jQuery
+      // https://stackoverflow.com/questions/36590722/
+      function reloadCounter(element_id,
+                             new_target,
+                             targetTimezone,
+                             cubeSize,
+                             background,
+                             color,
+                             onEnd,
+                             triggerEnd) {
+
+        $(element_id).empty();
+
+        $(element_id).countdownCube( {
+          target: new_target,
+          targetTimezone: targetTimezone,
+          cubeSize: cubeSize,
+          background:  background,
+          color: color,
+          onEnd: onEnd,
+          triggerEnd: triggerEnd,
+        } );
+      };
+    </script>
+    <script>
       $('#counter').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: targetDateStringUTC,
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  '#ffff00',
         color: 'blue',
       } );
 
       $('#counter-days-only').countdownCube( {
-        target: '2018-03-01T10:00:00Z',
+        target: targetDateStringUTC,
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'plum',
         color: 'red',
         labelsTranslations: {'year': 'anni',
                              'month': 'mesi',
@@ -182,48 +417,53 @@
       } );
 
       $('#counter-timezone-default').countdownCube( {
-        target: '2018-03-01T10:00:00',
+        target: targetDateString,
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'azure',
         color: 'forestgreen',
       } );
       $('#counter-timezone-new-york').countdownCube( {
-        target: '2018-03-01T10:00:00',
+        target: targetDateString,
         targetTimezone: 'America/New_York',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'azure',
         color: 'green',
       } );
       $('#counter-timezone-los-angeles').countdownCube( {
-        target: '2018-03-01T10:00:00',
+        target: targetDateString,
         targetTimezone: 'America/Los_Angeles',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'azure',
         color: 'chartreuse',
       } );
 
       $('#counter-date').countdownCube( {
-        target: new Date( 'March 1, 2018 10:00:00' ),
-        targetTimezone: 'America/Los_Angeles',
+        target: new Date( targetDateOldFormatString ),  // local time
+        targetTimezone: 'America/Los_Angeles',          // ignored
         cubeSize: 150,
-        background:  '#ffffff',
-        color: 'brown',
+        background:  'mistyrose',
+        color: 'sienna',
       } );
       $('#counter-date-utc').countdownCube( {
-        target: new Date( '2018-03-01T10:00:00Z' ),
-        targetTimezone: 'America/Los_Angeles',
+        target: new Date( targetDateStringUTC ),  // UTC
+        targetTimezone: 'America/Los_Angeles',    // ignored
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'mistyrose',
         color: 'saddlebrown',
       } );
+      $('#counter-date-los-angeles').countdownCube( {
+        target: new Date( targetDateStringOffset ),  // offset from UTC
+        cubeSize: 150,
+        background:  'mistyrose',
+        color: 'brown',
+      } );
 
-      in65seconds = new Date();
-      in65seconds.setSeconds(in65seconds.getSeconds() + 65);
+
       $('#counter-end').countdownCube( {
-        target: in65seconds.toISOString(),
+        target: nearFutureDateString,  // now + 10 seconds
         targetTimezone: 'UTC',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'whitesmoke',
         color: 'grey',
         onEnd: function(e) {
           $("#counter-end").text('This is the end!');
@@ -231,23 +471,35 @@
       } );
 
       $('#counter-end-notrigger').countdownCube( {
-        target: '2017-12-28T10:00:00',
+        target: targetDateStringPast,
         targetTimezone: 'UTC',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'lightcyan',
         color: 'darkcyan',
+        /*
+           target is in the past and triggerEnd is false,
+           so onEnd is not triggered when the page is loaded
+        */
         onEnd: function(e) {
-          $("#counter-end-notrigger").text('This was the end, but it was not triggered!');
+          $("#counter-end-notrigger")
+            .text('This was the end, but it was not triggered! ' +
+                  '(counter original target: ' +
+                  e.options.targetDateObject.toISOString() +
+                  ')');
         }
       } );
       $('#counter-end-trigger').countdownCube( {
-        target: '2017-12-28T10:00:00',
+        target: targetDateStringPast,
         targetTimezone: 'UTC',
         cubeSize: 150,
-        background:  '#ffffff',
+        background:  'lightcyan',
         color: 'cyan',
         onEnd: function(e) {
-          $("#counter-end-trigger").text('This was the end, and it was triggered!');
+          $("#counter-end-trigger")
+            .text('This was the end and it was triggered! ' +
+                  '(counter original target: ' +
+                  e.options.targetDateObject.toISOString() +
+                  ')');
         },
         triggerEnd: true,
       } );
