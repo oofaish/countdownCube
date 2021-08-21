@@ -86,42 +86,42 @@
 
             this.classes = [ 'front','back', 'right', 'left', 'top', 'bottom' ];
 
-                if( options.showDaysOnly ){
-                    this.topTags = [ 'day','hour', 'minute', 'second' ];
-                    this.loadingTags = [ 'LOAD', 'ING.', '....', '....'];
-                }
-                else {
-                    this.topTags = [ 'year', 'month', 'day','hour', 'minute', 'second' ];
-                    this.loadingTags = [ 'LO', 'AD', 'IN', 'G.', '..', '...'];
-                }
-                this.transformNames =  [ '-webkit-transform', '-moz-transform', '-o-transform', 'transform' ];
+            if( options.showDaysOnly ){
+                this.topTags = new Array( 'day','hour', 'minute', 'second' );
+                this.loadingTags = [ 'LOAD', 'ING.', '....', '....'];
+            }
+            else {
+                this.topTags = new Array( 'year', 'month', 'day','hour', 'minute', 'second' );
+                this.loadingTags = [ 'LO', 'AD', 'IN', 'G.', '..', '...'];
+            }
+            this.transformNames =  [ '-webkit-transform', '-moz-transform', '-o-transform', 'transform' ];
 
-                cubes = [];
+            //add the figures, etc to the div
+            let tagIndex = 0;
 
-                //add the figures, etc to the div
-                for( var tagIndex in this.topTags ) {
-                    var tag = this.topTags[ tagIndex ];
+            for( let tag of this.topTags )
+            {
+                cube = element.append('<section></section>')
+                    .children(':last')
+                    .attr('id', tag)
+                    .addClass("countdownCubeContainer")
+                    .append('<div></div>')
+                    .children(':last')
+                    .addClass('countdownCubeCube')
+                    .data('side', 'show-front');
 
-                    cube = element.append('<section></section>')
-                               .children(':last')
-                               .attr('id', tag )
-                               .addClass( "countdownCubeContainer" )
-                               .append('<div></div>')
-                               .children(':last')
-                               .addClass('countdownCubeCube')
-                               .data('side', 'show-front');
+                /*this is horrible, chaining would be much cooler*/
+                this.addFigures(cube,
+                    this.classes,
+                    this.loadingTags[tagIndex++]
+                );
 
-                    /*this is horrible, chaining would be much cooler*/
-                    this.addFigures( cube,
-                                     this.classes,
-                                     this.loadingTags[ tagIndex ] );
-
-                    element.children(':last')
-                        .append('<div></div>')
-                        .children(':last')
-                        .html(options.labelsTranslations[tag])
-                        .addClass('countdownCubeTitleDiv');
-                }
+                element.children(':last')
+                    .append('<div></div>')
+                    .children(':last')
+                    .html(options.labelsTranslations[tag])
+                    .addClass('countdownCubeTitleDiv');
+            }
                      
             this.setupAllCss( element, options );
 
